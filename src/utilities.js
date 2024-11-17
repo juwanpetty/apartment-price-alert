@@ -13,10 +13,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const connectionURL = `wss://browser.zenrows.com?apikey=${process.env.ZENROWS_API_KEY}`;
+
 // function to initialize Puppeteer
 async function initializeBrowser() {
   const browser = await puppeteer.connect({
-    browserWSEndpoint: process.env.CONNECTION_URL,
+    browserWSEndpoint: connectionURL,
   });
 
   const page = await browser.newPage();
