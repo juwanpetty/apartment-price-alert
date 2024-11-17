@@ -1,6 +1,6 @@
 const path = require("path");
+const puppeteer = require("puppeteer-core");
 const {
-  initializeBrowser,
   extractPrice,
   readPreviousValue,
   saveNewValue,
@@ -9,21 +9,29 @@ const {
 
 require("dotenv").config();
 
+const SBR_WS_ENDPOINT = `wss://${process.env.AUTH}@brd.superproxy.io:9222`;
+
 const url =
   "https://www.elanmadisonyards.com/atlanta/elan-madison-yards/floorplans/one-bedroom-one-bath-716-sf-703161/fp_name/occupancy_type/conventional/";
 const elementSelector = "span.fee-transparency-text";
 const previousValueFile = path.resolve(__dirname, "lastValue.txt");
 
-// Main function to scrape data and check for changes
-async function scrapeAndNotify() {
-  const { browser, page } = await initializeBrowser();
+async function main() {
+  console.log("Connecting to Scraping Browser...");
+  const browser = await puppeteer.connect({
+    browserWSEndpoint: SBR_WS_ENDPOINT,
+  });
 
   try {
-    await page.goto(url, { waitUntil: "networkidle2" });
+    console.log("Connected! Navigating...");
+    const page = await browser.newPage();
 
-    // Log the page title
-    const pageTitle = await page.title();
-    console.log("Page title:", pageTitle);
+    await page.goto(url, { timeout: 2 * 60 * 1000 });
+
+    console.log("Taking screenshot to page.png");
+    await page.screenshot({ path: "screenshot.png", fullPage: true });
+
+    console.log("Navigated! Scraping page content...");
 
     // Wait for the element and extract data
     await page.waitForSelector(elementSelector);
@@ -57,12 +65,22 @@ async function scrapeAndNotify() {
     } else {
       console.log("Price has not changed.");
     }
-  } catch (error) {
-    console.error("Error occurred:", error);
+
+    // Note 1: If no captcha was found it will return not_detected status after detectTimeout
+    // Note 2: Once a CAPTCHA is solved, if there is a form to submit, it will be submitted by default
+    const client = await page.target().createCDPSession();
+    const { status } = await client.send("Captcha.solve", {
+      detectTimeout: 30 * 1000,
+    });
+    console.log(`Captcha solve status: ${status}`);
   } finally {
     await browser.close();
   }
 }
 
-// Execute the main function
-scrapeAndNotify();
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(err.stack || err);
+    process.exit(1);
+  });
+}
