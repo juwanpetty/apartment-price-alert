@@ -26,9 +26,6 @@ async function main() {
 
     await page.goto(url, { timeout: 2 * 60 * 1000 });
 
-    console.log("Taking screenshot to page.png");
-    await page.screenshot({ path: "screenshot.png", fullPage: true });
-
     console.log("Navigated! Scraping page content...");
 
     // Wait for the element and extract data

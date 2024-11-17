@@ -1,5 +1,4 @@
 const { MongoClient } = require("mongodb");
-const puppeteer = require("puppeteer-core");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
@@ -55,11 +54,35 @@ async function saveNewValue(value) {
   }
 }
 
+// function to fetch email recipients from MongoDB
+async function getRecipients() {
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+    const collection = db.collection("recipients");
+
+    const recipients = await collection.find({}).toArray();
+    return recipients.map((recipient) => recipient.email); // Return an array of email addresses
+  } catch (err) {
+    console.error("Error fetching recipients:", err.message);
+    return [];
+  } finally {
+    await client.close();
+  }
+}
+
 // function to send email
 async function sendEmail(subject, plainTextMessage, htmlMessage) {
+  // Fetch recipients from MongoDB
+  const recipients = await getRecipients();
+  if (recipients.length === 0) {
+    console.log("No recipients found, skipping email.");
+    return;
+  }
+
   const mailOptions = {
     from: process.env.EMAIL_USER,
-    bcc: process.env.EMAIL_TO,
+    to: recipients,
     subject: subject,
     text: plainTextMessage,
     html: htmlMessage,
