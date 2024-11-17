@@ -1,8 +1,10 @@
 const puppeteer = require("puppeteer-extra");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 
 require("dotenv").config();
+puppeteer.use(StealthPlugin());
 
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({

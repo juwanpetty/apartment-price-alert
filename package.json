@@ -13,7 +13,8 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "nodemailer": "^6.9.16",
-    "puppeteer-extra": "^3.3.6"
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "engines": {
     "node": ">=16.0.0 <19.0.0"
