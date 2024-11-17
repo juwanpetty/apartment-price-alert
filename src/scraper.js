@@ -1,4 +1,3 @@
-const path = require("path");
 const puppeteer = require("puppeteer-core");
 const {
   extractPrice,
@@ -14,7 +13,6 @@ const SBR_WS_ENDPOINT = `wss://${process.env.AUTH}@brd.superproxy.io:9222`;
 const url =
   "https://www.elanmadisonyards.com/atlanta/elan-madison-yards/floorplans/one-bedroom-one-bath-716-sf-703161/fp_name/occupancy_type/conventional/";
 const elementSelector = "span.fee-transparency-text";
-const previousValueFile = path.resolve(__dirname, "lastValue.txt");
 
 async function main() {
   console.log("Connecting to Scraping Browser...");
@@ -49,13 +47,13 @@ async function main() {
     }
     console.log("Extracted price:", price);
 
-    // Read the previous value and compare
-    const previousValue = readPreviousValue(previousValueFile);
+    // Read the previous value from MongoDB and compare
+    const previousValue = await readPreviousValue();
     if (previousValue !== price) {
       console.log("Price has changed!");
 
-      // Save the new price to the file
-      saveNewValue(previousValueFile, price);
+      // Save the new price to MongoDB
+      await saveNewValue(price);
 
       // Send email notification
       const subject = `Elan Price Change Alert! ${price}`;
