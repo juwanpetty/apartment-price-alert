@@ -19,13 +19,8 @@ async function initializeBrowser() {
     headless: true,
     args: [
       "--no-sandbox", // Required for Heroku
-      "--disable-setuid-sandbox", // Required for Heroku
-      "--disable-dev-shm-usage", // Prevents Chromium from using /dev/shm
-      "--disable-accelerated-2d-canvas", // Disable GPU
-      "--no-zygote", // Disable zygote processes
-      "--single-process", // Use a single process (Heroku limitation)
-      "--disable-gpu", // Disable GPU for headless environments
     ],
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
   });
   const page = await browser.newPage();
   return { browser, page };

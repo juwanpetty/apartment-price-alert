@@ -12,7 +12,6 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "nodemailer": "^6.9.16",
-    "puppeteer": "^23.8.0",
     "puppeteer-extra": "^3.3.6"
   }
 }
