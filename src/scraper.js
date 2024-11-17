@@ -21,7 +21,7 @@ async function scrapeAndNotify() {
   await page.setViewport({ width: 800, height: 600 });
 
   try {
-    await page.goto(url, { waitUntil: "networkidle2" });
+    await page.goto(url, { timeout: 60000, waitUntil: "domcontentloaded" });
 
     // Wait for the element and extract data
     await page.waitForSelector(elementSelector);
