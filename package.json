@@ -1,0 +1,18 @@
+{
+  "name": "apartment-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scraper.js",
+  "scripts": {
+    "start": "node src/scraper.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.16",
+    "puppeteer-extra": "^3.3.6"
+  }
+}
