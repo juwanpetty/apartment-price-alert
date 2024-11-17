@@ -18,10 +18,12 @@ const previousValueFile = path.resolve(__dirname, "lastValue.txt");
 async function scrapeAndNotify() {
   const { browser, page } = await initializeBrowser();
 
-  await page.setViewport({ width: 800, height: 600 });
-
   try {
-    await page.goto(url, { timeout: 60000, waitUntil: "domcontentloaded" });
+    await page.goto(url, { waitUntil: "networkidle2" });
+
+    // Log the page title
+    const pageTitle = await page.title();
+    console.log("Page title:", pageTitle);
 
     // Wait for the element and extract data
     await page.waitForSelector(elementSelector);

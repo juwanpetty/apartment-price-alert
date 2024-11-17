@@ -1,10 +1,8 @@
-const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+const puppeteer = require("puppeteer-core");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 
 require("dotenv").config();
-puppeteer.use(StealthPlugin());
 
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
@@ -17,12 +15,10 @@ const transporter = nodemailer.createTransport({
 
 // function to initialize Puppeteer
 async function initializeBrowser() {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      "--no-sandbox", // Required for Heroku
-    ],
+  const browser = await puppeteer.connect({
+    browserWSEndpoint: process.env.CONNECTION_URL,
   });
+
   const page = await browser.newPage();
   return { browser, page };
 }
