@@ -4,8 +4,7 @@
   "description": "",
   "main": "scraper.js",
   "scripts": {
-    "start": "node src/scraper.js",
-    "heroku-postbuild": "node node_modules/puppeteer/install.mjs && mkdir -p ./.cache && mv /app/.cache/puppeteer ./.cache"
+    "start": "node src/scraper.js"
   },
   "keywords": [],
   "author": "",
