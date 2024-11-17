@@ -6,7 +6,6 @@ const {
   saveNewValue,
   sendEmail,
 } = require("./utilities");
-const cron = require("node-cron");
 
 require("dotenv").config();
 
@@ -61,17 +60,5 @@ async function scrapeAndNotify() {
   }
 }
 
-// // Run the function immediately
-// (async () => {
-//   console.log(`Initial run at ${new Date().toLocaleString()}`);
-//   await scrapeAndNotify();
-// })();
-
-// // Schedule the task to run every hour
-// cron.schedule("0 * * * *", () => {
-//   console.log(`Scheduled run at ${new Date().toLocaleString()}`);
-//   scrapeAndNotify();
-// });
-
-// Run the function immediately for testing
+// Execute the main function
 scrapeAndNotify();

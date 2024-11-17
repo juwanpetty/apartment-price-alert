@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.16",
     "puppeteer-extra": "^3.3.6"
   }
