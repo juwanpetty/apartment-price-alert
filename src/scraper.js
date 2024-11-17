@@ -18,6 +18,8 @@ const previousValueFile = path.resolve(__dirname, "lastValue.txt");
 async function scrapeAndNotify() {
   const { browser, page } = await initializeBrowser();
 
+  await page.setViewport({ width: 800, height: 600 });
+
   try {
     await page.goto(url, { waitUntil: "networkidle2" });
 
