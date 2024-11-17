@@ -20,7 +20,6 @@ async function initializeBrowser() {
     args: [
       "--no-sandbox", // Required for Heroku
     ],
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
   });
   const page = await browser.newPage();
   return { browser, page };
